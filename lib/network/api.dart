@@ -27,6 +27,13 @@ class Network {
     );
   }
 
+  getRole(apiURL) async {
+    var fullUrl = _url + apiURL;
+    return await http.get(
+      fullUrl,
+    );
+  }
+
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',

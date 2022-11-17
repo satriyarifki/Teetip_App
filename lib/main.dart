@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
 import 'screens/login.dart';
+import 'screens/Login/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -23,16 +24,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CheckAuth extends StatefulWidget{
+class CheckAuth extends StatefulWidget {
   @override
   _CheckAuthState createState() => _CheckAuthState();
 }
 
-class _CheckAuthState extends State<CheckAuth>{
+class _CheckAuthState extends State<CheckAuth> {
   bool isAuth = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _checkIfLoggedIn();
   }
@@ -40,8 +41,8 @@ class _CheckAuthState extends State<CheckAuth>{
   void _checkIfLoggedIn() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
-    if(token != null){
-      if(mounted){
+    if (token != null) {
+      if (mounted) {
         setState(() {
           isAuth = true;
         });
@@ -50,12 +51,12 @@ class _CheckAuthState extends State<CheckAuth>{
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     Widget child;
-    if(isAuth){
+    if (isAuth) {
       child = Home();
-    } else{
-      child = Login();
+    } else {
+      child = LoginScreen();
     }
 
     return Scaffold(

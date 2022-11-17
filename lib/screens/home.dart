@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teetip_app/network/api.dart';
 import 'dart:convert';
 import 'login.dart';
+import 'Login/login_screen.dart';
+import '../../constants.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -32,10 +34,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff151515),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: Text('Home'),
-        backgroundColor: Color(0xff151515),
+        backgroundColor: kPrimaryColor,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -80,7 +82,7 @@ class _HomeState extends State<Home> {
       localStorage.remove('user');
       localStorage.remove('token');
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Login()));
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
   }
 }
