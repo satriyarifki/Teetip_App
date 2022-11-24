@@ -161,7 +161,7 @@ class _SignUpForm extends State<SignUpForm> {
       'password': password
     };
 
-    var res = await Network().auth(data, '/register');
+    var res = await Network().auth(data, '/auth/register');
     var body = json.decode(res.body);
     if (body['success']) {
       Navigator.pushReplacement(

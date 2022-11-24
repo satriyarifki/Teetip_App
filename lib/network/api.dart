@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  final String _url = 'http://10.0.2.2:8000/api/auth';
+  final String _url = 'http://10.0.2.2:8000/api';
   // 192.168.1.2 is my IP, change with your IP address
   var token;
 
@@ -24,13 +24,6 @@ class Network {
     return await http.get(
       fullUrl,
       headers: _setHeaders(),
-    );
-  }
-
-  getRole(apiURL) async {
-    var fullUrl = _url + apiURL;
-    return await http.get(
-      fullUrl,
     );
   }
 

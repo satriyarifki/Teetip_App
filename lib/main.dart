@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
 import 'screens/login.dart';
+import 'screens/Customer/home.dart';
+import 'screens/Owner/home.dart';
 import 'screens/Login/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +36,7 @@ class CheckAuth extends StatefulWidget {
 
 class _CheckAuthState extends State<CheckAuth> {
   bool isAuth = false;
+  int role_id = 0;
 
   @override
   void initState() {
@@ -41,6 +47,7 @@ class _CheckAuthState extends State<CheckAuth> {
   void _checkIfLoggedIn() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
+    var user = localStorage.getString('user');
     if (token != null) {
       if (mounted) {
         setState(() {
@@ -48,13 +55,24 @@ class _CheckAuthState extends State<CheckAuth> {
         });
       }
     }
+    if (user != null) {
+      setState(() {
+        role_id = jsonDecode(user)['role_id'];
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     Widget child;
     if (isAuth) {
-      child = Home();
+      if (role_id == 3) {
+        child = HomeCust();
+      } else if (role_id == 4) {
+        child = HomeOwner();
+      } else {
+        child = Home();
+      }
     } else {
       child = LoginScreen();
     }

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:teetip_app/network/api.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:teetip_app/screens/Signup/components/signup_form.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../Home.dart';
+import '../../Customer/home.dart';
+import '../../Owner/home.dart';
 import '../../../constants.dart';
 import '../../Signup/signup_screen.dart';
+import 'dart:developer';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -26,7 +30,7 @@ class _LoginForm extends State<LoginForm> {
   }
 
   _showMsg(msg) {
-    final snackBar = SnackBar(
+    final snackBarr = SnackBar(
       content: Text(msg),
     );
   }
@@ -62,9 +66,8 @@ class _LoginForm extends State<LoginForm> {
                   hintText: "Your password",
                   suffixIcon: IconButton(
                     onPressed: showHide,
-                    icon: Icon(_secureText 
-                    ? Icons.visibility_off 
-                    : Icons.visibility),
+                    icon: Icon(
+                        _secureText ? Icons.visibility_off : Icons.visibility),
                   ),
                 ),
                 validator: (passwordValue) {
@@ -114,16 +117,31 @@ class _LoginForm extends State<LoginForm> {
     });
     var data = {'email': email, 'password': password};
 
-    var res = await Network().auth(data, '/login');
+    var res = await Network().auth(data, '/auth/login');
     var body = json.decode(res.body);
-    if (body['success']) {
+    // log("$body['success']");
+    if (body['success'] == true) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', json.encode(body['token']));
       localStorage.setString('user', json.encode(body['user']));
-      Navigator.pushReplacement(
-        context,
-        new MaterialPageRoute(builder: (context) => Home()),
-      );
+      int role_id = body['user']['role_id'];
+      // log('$role_id');
+      if (role_id == 3) {
+        Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(builder: (context) => HomeCust()),
+        );
+      } else if (role_id == 4) {
+        Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(builder: (context) => HomeOwner()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(builder: (context) => Home()),
+        );
+      }
     } else {
       _showMsg(body['message']);
     }
