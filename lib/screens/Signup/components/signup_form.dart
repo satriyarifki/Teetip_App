@@ -23,8 +23,8 @@ class _SignUpForm extends State<SignUpForm> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _secureText = true;
   int dropdownValue = role_ids.first;
-  late int role_id;
-  String text = "";
+  int role_id = 3;
+  String roletext = "";
 
   showHide() {
     setState(() {
@@ -32,10 +32,17 @@ class _SignUpForm extends State<SignUpForm> {
     });
   }
 
+  roleChanges(val) {
+    setState(() {
+      dropdownValue = val!;
+    });
+  }
+
   _showMsg(msg) {
     final snackBar = SnackBar(
       content: Text(msg),
     );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -70,12 +77,13 @@ class _SignUpForm extends State<SignUpForm> {
             ),
             onChanged: (int? value) {
               // This is called when the user selects an item.
+              roleChanges(value);
               role_id = value!;
             },
             items: role_ids.map<DropdownMenuItem<int>>((int value) {
               return DropdownMenuItem<int>(
                 value: value,
-                child: Text(value == 3 ? "Customer" : "Owner"),
+                child: Text(role[value - 3]),
               );
             }).toList(),
           ),

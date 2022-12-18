@@ -33,15 +33,18 @@ class _LoginForm extends State<LoginForm> {
     final snackBarr = SnackBar(
       content: Text(msg),
     );
+    ScaffoldMessenger.of(context).showSnackBar(snackBarr);
   }
 
   @override
   Widget build(BuildContext context) {
+    print("build");
     return Form(
       key: _formKey,
       child: Column(
         children: [
           TextFormField(
+              initialValue: 'customer@teetip.com',
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               cursorColor: kPrimaryColor,
@@ -59,6 +62,7 @@ class _LoginForm extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: defaultPadding),
             child: TextFormField(
+                initialValue: 'customer',
                 textInputAction: TextInputAction.done,
                 obscureText: _secureText,
                 cursorColor: kPrimaryColor,
@@ -125,7 +129,7 @@ class _LoginForm extends State<LoginForm> {
       localStorage.setString('token', json.encode(body['token']));
       localStorage.setString('user', json.encode(body['user']));
       int role_id = body['user']['role_id'];
-      // log('$role_id');
+      log('$role_id');
       if (role_id == 3) {
         Navigator.pushReplacement(
           context,
@@ -143,6 +147,7 @@ class _LoginForm extends State<LoginForm> {
         );
       }
     } else {
+      log(body['message']);
       _showMsg(body['message']);
     }
 

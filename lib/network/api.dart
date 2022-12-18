@@ -27,6 +27,16 @@ class Network {
     );
   }
 
+  postData(data, apiURL) async {
+    var fullUrl = _url + apiURL;
+    await _getToken();
+    return await http.post(
+      fullUrl,
+      body: jsonEncode(data),
+      headers: _setHeaders(),
+    );
+  }
+
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',

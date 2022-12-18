@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
 import 'screens/login.dart';
@@ -46,6 +45,7 @@ class _CheckAuthState extends State<CheckAuth> {
 
   void _checkIfLoggedIn() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
+    // localStorage.clear();
     var token = localStorage.getString('token');
     var user = localStorage.getString('user');
     if (token != null) {

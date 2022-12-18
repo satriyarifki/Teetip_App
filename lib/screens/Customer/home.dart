@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teetip_app/network/api.dart';
+import 'package:teetip_app/screens/Customer/transaction.dart';
 import 'dart:convert';
+import 'home_list.dart';
+import 'settings.dart';
 import '../login.dart';
 import '../Login/login_screen.dart';
 import '../../constants.dart';
@@ -15,29 +18,41 @@ class HomeCust extends StatefulWidget {
 
 class _HomeStateCust extends State<HomeCust> {
   String name = '';
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _loadUserData();
+  // }
 
-  Future getWarehouse() async {
-    var res = await Network().getData('/get-warehouse');
-    var body = json.decode(res.body);
-    log('$body');
-    return body;
-  }
+  // Future getWarehouse() async {
+  //   var res = await Network().getData('/get-warehouse');
+  //   var body = json.decode(res.body);
+  //   log('$body');
+  //   return body;
+  // }
 
-  _loadUserData() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var user = jsonDecode(localStorage.getString('user'));
+  // _loadUserData() async {
+  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
+  //   var user = jsonDecode(localStorage.getString('user'));
 
-    if (user != null) {
-      setState(() {
-        name = user['email'];
-      });
-    }
+  //   if (user != null) {
+  //     setState(() {
+  //       name = user['email'];
+  //     });
+  //   }
+  // }
+
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeListCust(),
+    TransactionCust(),
+    SettingCust(),
+  ];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -45,7 +60,8 @@ class _HomeStateCust extends State<HomeCust> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: Text('Home'),
+        elevation: 0,
+        title: Text('Customer Home'),
         backgroundColor: kPrimaryCustomer,
         automaticallyImplyLeading: false,
         actions: [
@@ -57,74 +73,28 @@ class _HomeStateCust extends State<HomeCust> {
           )
         ],
       ),
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Hello, ',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                  Text(
-                    '${name}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-              FutureBuilder(
-                  future: getWarehouse(),
-                  builder: ((context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: snapshot.data['warehouse'].length,
-                          itemBuilder: ((context, index) {
-                            return Card(
-                              elevation: 3,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                  Text(snapshot.data['warehouse'][index]
-                                      ['name']),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                  Text(snapshot.data['warehouse'][index]
-                                      ['alamat']),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                  Text('Harga : Rp' +
-                                      snapshot.data['warehouse'][index]
-                                              ['harga_m2']
-                                          .toString() +
-                                      ' m2'),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                  ElevatedButton(
-                                      onPressed: (() => HomeCust()),
-                                      child: Text("Details"))
-                                ],
-                              ),
-                            );
-                          }));
-                    } else {
-                      return Text('Error');
-                    }
-                  }))
-            ],
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: 'Home',
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.money_rounded),
+            label: 'Transaction',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.lightBlue,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        onTap: _onItemTapped,
       ),
     );
   }
