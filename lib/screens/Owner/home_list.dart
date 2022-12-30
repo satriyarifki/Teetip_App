@@ -75,7 +75,8 @@ class _HomeListOwner extends State<HomeListOwner> {
                   child: Text("Add")),
             ),
             Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-            FutureBuilder(
+            if (getWarehouse() != null) ...[
+              FutureBuilder(
                 future: getOwnerWarehouse(),
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
@@ -173,6 +174,8 @@ class _HomeListOwner extends State<HomeListOwner> {
                     return Text('Load');
                   }
                 }))
+            ],
+            
           ],
         ),
       ),
