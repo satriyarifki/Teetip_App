@@ -3,9 +3,9 @@
 A new Flutter project.
 
 ## Customer Role
-![](https://github.com/satriyarifki/Teetip_App/assets/gif/TeetipCustomer.gif)
+![](https://github.com/satriyarifki/Teetip_App/blob/master/assets/gif/TeetipCustomer.gif)
 
 ## Owner Role
-![](https://github.com/satriyarifki/Teetip_App/assets/gif/TeetipOwner.gif)
+![](https://github.com/satriyarifki/Teetip_App/blob/master/assets/gif/TeetipOwner.gif)
 
 
